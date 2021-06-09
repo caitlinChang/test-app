@@ -1,35 +1,67 @@
-import React, { useEffect } from "react";
-import { Button, Form, Input } from "antd";
-import api from "../../api/apollo";
-import { CLUSTERS, ENVS } from "src/api/types";
+import React, { useEffect, useState } from "react";
+import { Button, Form, FormInstance, Input, Typography, Collapse } from "antd";
 
-export default function ConfigPage() {
-  const getFormData = async () => {
-    const res = await api.getConfig({
-      envs: ENVS.TEST,
-      clusters: CLUSTERS.TH,
-      namespaces: "frontend-config",
-    });
-    if (res) {
-      const { baseInfo, items } = res;
-      items.forEach((item) => {
-        const { value } = item;
-      });
-    }
-    console.log(res);
-  };
-  const handleRefresh = function () {
-    getFormData();
-  };
+import FilterInput from "./components/filterInput";
+
+const { Panel } = Collapse;
+
+export default function ConfigPage(props: {
+  onCommit: (form: FormInstance) => void;
+  onRefresh: () => void;
+  initialValues: any;
+}) {
+  const [form] = Form.useForm();
+
   useEffect(() => {
-    getFormData();
-  }, []);
+    form.setFieldsValue(props.initialValues);
+  }, [props.initialValues]);
+
   return (
     <div>
-      <Button onClick={handleRefresh}>刷新</Button>
-      <Button>提交修改</Button>
-      <Form>
-        <Form.Item></Form.Item>
+      <Button onClick={props.onRefresh}>刷新</Button>
+      <Button onClick={() => props.onCommit(form)}>提交修改</Button>
+      <Form form={form}>
+        <Form.List name="Graphs">
+          {(fields) => (
+            <Collapse>
+              {fields.map((field, index) => {
+                return (
+                  <Panel header={`Graph ${index}`} key={index}>
+                    <Form.Item
+                      label="title"
+                      name={[field.name, "title"]}
+                      fieldKey={[field.fieldKey, "title"]}
+                    >
+                      <Input></Input>
+                    </Form.Item>
+                    <Form.Item
+                      label="tooltip"
+                      name={[field.name, "tooltip"]}
+                      fieldKey={[field.fieldKey, "tooltip"]}
+                    >
+                      <Input></Input>
+                    </Form.Item>
+
+                    <Form.Item
+                      label="promParams.query"
+                      name={[field.name, "promParams", "query"]}
+                      fieldKey={[field.fieldKey, "promParams", "query"]}
+                    >
+                      <FilterInput />
+                    </Form.Item>
+                    <Form.Item
+                      label="promParams.ratioQuery"
+                      name={[field.name, "promParams", "ratioQuery"]}
+                      fieldKey={[field.fieldKey, "promParams", "ratioQuery"]}
+                    >
+                      <FilterInput />
+                    </Form.Item>
+                  </Panel>
+                );
+              })}
+            </Collapse>
+          )}
+        </Form.List>
       </Form>
     </div>
   );

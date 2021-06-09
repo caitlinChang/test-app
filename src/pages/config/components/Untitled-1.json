@@ -1,0 +1,162 @@
+{
+  "entryPoints": {
+    "greetings": {
+      "login": [
+        { "desc": "Me page entry point", "value": 1 },
+        { "desc": "Help Center page entry point", "value": 4 },
+        { "desc": "Seller Me page entry point", "value": 2 },
+        { "desc": "Buyer Shipping Info page entry point", "value": 3 }
+      ],
+      "nonLogin": [
+        { "desc": "Me page entry point", "value": 1 },
+        { "desc": "Help Center page entry point", "value": 4 }
+      ]
+    },
+    "hqAndShortcuts": {
+      "login": [
+        { "desc": "Buyer Shipping Info page entry point", "value": 3 },
+        { "desc": "Seller Me page entry point", "value": 2 },
+        { "desc": "General entry point", "value": 0 }
+      ],
+      "nonLogin": [{ "desc": "General entry point", "value": 0 }]
+    },
+    "hqCategory": {
+      "login": [{ "desc": "General entry point", "value": 0 }],
+      "nonLogin": [{ "desc": "General entry point", "value": 0 }]
+    },
+    "3x3": {
+      "login": [{ "desc": "General entry point", "value": 0 }],
+      "nonLogin": [{ "desc": "General entry point", "value": 0 }]
+    }
+  },
+  "userType": [
+    { "desc": "Normal users", "value": 1 },
+    { "desc": "Premium users", "value": 2 }
+  ],
+  "orderStatus": [
+    { "desc": "To Ship", "value": "to_ship" },
+    { "desc": "To Receive", "value": "to_receive" },
+    { "desc": "Completed", "value": "completed" },
+    { "desc": "Cancelled", "value": "cancelled" }
+  ],
+  "grayFeatures": {
+    "intentPrediction": { "country": ["id"] },
+    "showUserType": { "country": ["id", "ph", "th", "tw", "sg"] }
+  },
+  "TrafficManagementCentre": {
+    "Overview": {
+      "Graphs": [
+        {
+          "title": "Chatbot",
+          "tooltip": "The number represents the total chatbot received sessions of the most recent 10 minutes of the data range. \nThe ratio represents the total chatbot received sessions of the most recent 10 minutes compared with the last 10 minutes.",
+          "icon": "headset",
+          "type": "Stat",
+          "source": "prom",
+          "promParams": {
+            "query": "sum(sum%20by%20(entry_point)(round(delta(chatbot_session_count%7Bregion%3D%22th%22%2Cenv%3D%22test%22%7D%5B10m%5D))))",
+            "ratioQuery": "sum(sum%20by%20(entry_point)(round(delta(chatbot_session_count%7Bregion%3D%22th%22%2Cenv%3D%22test%22%7D%5B10m%5D))))%20%2F%20sum(sum%20by%20(entry_point)(round(delta(chatbot_session_count%7Bregion%3D%22th%22%2Cenv%3D%22test%22%7D%5B10m%5D%20offset%2010m))))%20-%201"
+          },
+          "options": { "valueName": "current" },
+          "row": 6,
+          "column": 3
+        },
+        {
+          "title": "Top Entry Point",
+          "tooltip": "The entry point name represents the entry point that created most sessions to chatbot in the most recent 10 minutes.",
+          "icon": "person",
+          "type": "Stat",
+          "source": "prom",
+          "promParams": {
+            "query": "sum%20by%20(entry_point)(round(delta(chatbot_session_count%7Bregion%3D%22th%22%2Cenv%3D%22test%22%7D%5B10m%5D)))",
+            "ratioQuery": ""
+          },
+          "options": { "valueName": "name", "legendFormat": "{{entry_point}}" },
+          "row": 6,
+          "column": 3
+        },
+        {
+          "title": "To Live Agent",
+          "tooltip": "The number represents the total number of sessions where users go to live agent of the most recent 10 minutes of the data range. \n The ratio represents the total number of sessions where users go to live agent of the most recent 10 minutes compared with the last 10 minutes.",
+          "icon": "phone",
+          "type": "Stat",
+          "source": "prom",
+          "promParams": {
+            "query": "sum(sum%20by%20(function)(round(delta(chatbot_liveagent_count%7Bregion%3D%22th%22%2Cenv%3D%22test%22%7D%5B10m%5D))))",
+            "ratioQuery": "sum(sum%20by%20(function)(round(delta(chatbot_liveagent_count%7Bregion%3D%22th%22%2Cenv%3D%22test%22%7D%5B10m%5D))))%20%2F%20sum(sum%20by%20(function)(round(delta(chatbot_liveagent_count%7Bregion%3D%22th%22%2Cenv%3D%22test%22%7D%5B10m%5D%20offset%2010m))))%20-%201"
+          },
+          "options": { "valueName": "current" },
+          "timeout": "",
+          "row": 6,
+          "column": 3
+        },
+        {
+          "title": "User in the Queue",
+          "tooltip": "The number represents the total number of users that queueing to the live agent at that time point with 10 minutes update interval. \n The ratio represents the total number of users that queueing to the live agent at that time point compared with the last time point.",
+          "icon": "people",
+          "type": "Stat",
+          "source": "prom",
+          "promParams": {
+            "query": "sum(max(queue_ccu%7Bregion%3D%22th%22%2Cenv%3D%22test%22%7D)%20by(ccu))",
+            "ratioQuery": "sum(max(queue_ccu%7Bregion%3D%22th%22%2Cenv%3D%22test%22%7D)%20by(ccu))%20%2F%20sum(max(queue_ccu%7Bregion%3D%22th%22%2Cenv%3D%22test%22%7Doffset%2010m)%20by(ccu))%20-%201"
+          },
+          "options": { "valueName": "current" },
+          "row": 6,
+          "column": 3
+        },
+        {
+          "title": "Traffic Breakdown by Functions (Dialogues)",
+          "tooltip": "The values plotted over time represent the total dialogues chatbot received of each function.",
+          "type": "Area",
+          "source": "prom",
+          "promParams": {
+            "query": "sum%20by%20(function)(round(delta(chatbot_dialogue_count%7Bregion%3D%22th%22%2Cenv%3D%22test%22%7D%5B10m%5D)))",
+            "ratioQuery": "sum%20by%20(function)(round(delta(chatbot_dialogue_count%7Bregion%3D%22th%22%2Cenv%3D%22test%22%7D%5B10m%5D)))%20%2F%20sum%20by%20(function)(round(delta(chatbot_dialogue_count%7Bregion%3D%22th%22%2Cenv%3D%22test%22%7D%5B10m%5D%20offset%2010m)))%20-%201%20"
+          },
+          "options": { "legendFormat": "{{function}}" },
+          "row": 14,
+          "column": 6
+        },
+        {
+          "title": "Traffic To Live Agent Breakdown by Functions (Dialogues)",
+          "tooltip": "The values plotted over time represent the total dialogues that transferred to live agent of each function.",
+          "type": "Area",
+          "source": "prom",
+          "promParams": {
+            "query": "sum%20by%20(function)(round(delta(chatbot_liveagent_count%7Bregion%3D%22th%22%2Cenv%3D%22test%22%7D%5B10m%5D)))",
+            "ratioQuery": "sum%20by%20(function)(round(delta(chatbot_liveagent_count%7Bregion%3D%22th%22%2Cenv%3D%22test%22%7D%5B10m%5D)))%20%2F%20sum%20by%20(function)(round(delta(chatbot_liveagent_count%7Bregion%3D%22th%22%2Cenv%3D%22test%22%7D%5B10m%5D%20offset%2010m)))%20-%201"
+          },
+          "options": { "legendFormat": "{{function}}" },
+          "row": 14,
+          "column": 6
+        },
+        {
+          "title": "Traffic Breakdown by Entry Points (Sessions)",
+          "tooltip": "The values plotted over time represent the total sessions chatbot received from each entry point.",
+          "type": "Line",
+          "source": "prom",
+          "promParams": {
+            "query": "sum%20by%20(entry_point)(round(delta(chatbot_session_count%7Bregion%3D%22th%22%2Cenv%3D%22test%22%7D%5B10m%5D)))",
+            "ratioQuery": "sum%20by%20(entry_point)(round(delta(chatbot_session_count%7Bregion%3D%22th%22%2Cenv%3D%22test%22%7D%5B10m%5D)))%20-%20sum%20by%20(entry_point)(round(delta(chatbot_session_count%7Bregion%3D%22th%22%2Cenv%3D%22test%22%7D%5B10m%5D%20offset%2010m)))%20-%201"
+          },
+          "options": { "legendFormat": "{{entry_point}}" },
+          "row": 14,
+          "column": 6
+        },
+        {
+          "title": "User In the Live Agent Queues(Top 5 Categories)",
+          "tooltip": "The values plotted over time represent the users that queuing to the live agent of the top 5 categories.",
+          "type": "Line",
+          "source": "prom",
+          "promParams": {
+            "query": "max(queue_ccu%7Bregion%3D%22id%22%2Cenv%3D%22test%22%7D)%20by%20(ccu)",
+            "ratioQuery": "(max(queue_ccu%7Bregion%3D%22id%22%2Cenv%3D%22test%22%7D)%20by%20(ccu)%20%2F%20max(queue_ccu%7Bregion%3D%22id%22%2Cenv%3D%22test%22%7D%20offset%2010m)%20by%20(ccu))%20-%201"
+          },
+          "options": { "legendFormat": "{{ccu}}" },
+          "filter": { "type": "top5" },
+          "row": 14,
+          "column": 6
+        }
+      ]
+    }
+  }
+}
