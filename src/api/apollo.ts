@@ -1,29 +1,30 @@
 import { AxiosResponse } from "axios";
 import { fetch } from "./base";
-import {
-  ENVS,
-  CLUSTERS,
-  PutParam,
-  GetConfigParam,
-  GetApiResponse,
-} from "./types";
+import { PutParam, GetConfigParam, GetApiResponse } from "./types";
+import { generateRequest, generateUrl } from "src/utils";
 
+const NAMESPACES = "frontend-config"; //当前所有环境下所有的命令空间，这里先写死
+
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   async put(params: PutParam) {
-    const namespaces = "frontend-config";
-    const envs = ENVS.TEST;
-    const clusters = CLUSTERS.TH;
     const api = "/item";
 
-    return await fetch({
-      method: "PUT",
-      url: `/envs/${envs}/clusters/${clusters}/namespaces/${namespaces}${api}`,
-      params,
-      headers: {
-        "content-type": "application/json",
-      },
-    });
+    const request = (url: string) =>
+      fetch({
+        method: "PUT",
+        url,
+        data: params,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+    const fns = generateRequest(generateUrl(NAMESPACES, api), request);
+
+    return await Promise.all(fns);
   },
+
   async getConfig(
     params: GetConfigParam
   ): Promise<AxiosResponse<GetApiResponse>> {

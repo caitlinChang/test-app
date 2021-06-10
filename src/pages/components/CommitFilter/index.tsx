@@ -1,10 +1,11 @@
-import { Select, FormInstance } from "antd";
+import { Button, Select, FormInstance, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { CLUSTERS, ENVS } from "src/api/types";
+import { api_store, STATUS_NAME } from "src/store";
 
 const { Option } = Select;
 
-const getEnvChildren = function () {
+export const getEnvChildren = function () {
   return Object.entries(ENVS).map(([key, value]) => {
     console.log(key, value);
     return (
@@ -15,7 +16,7 @@ const getEnvChildren = function () {
   });
 };
 
-const getClusterChildren = function () {
+export const getClusterChildren = function () {
   return Object.entries(CLUSTERS).map(([key, value]) => {
     return (
       <Option key={value} value={value}>
@@ -25,16 +26,33 @@ const getClusterChildren = function () {
   });
 };
 
-export default function Home() {
+export default function CommitFilter(props: { onSyncToOthers: () => void }) {
+  const handleSyncToOthers = function () {
+    if (
+      !api_store[STATUS_NAME.ENV].values.length ||
+      !api_store[STATUS_NAME.CLUSTER].values.length
+    ) {
+      return message.warning("请选择需要同步的环境和地区");
+    }
+
+    props.onSyncToOthers();
+  };
+
   return (
-    <div style={{ margin: "20px auto", borderBottom: "1px solid #000" }}>
-      <strong>请选择发布环境(env)和地区(cluster): </strong>
+    <div
+      style={{
+        padding: "12px 0",
+        overflow: "hidden",
+        backgroundColor: "#f0f0f0",
+      }}
+    >
+      <Button onClick={handleSyncToOthers}>同步到其他环境和地区</Button>
       <Select
-        mode="multiple"
         allowClear
         style={{ width: "300px", margin: "0 20px" }}
         placeholder="请选择发布环境"
-        defaultValue={[ENVS.TEST]}
+        defaultValue={ENVS.TEST}
+        onChange={(values) => api_store.updateStatus(STATUS_NAME.ENV, [values])}
       >
         {getEnvChildren()}
       </Select>
@@ -44,6 +62,9 @@ export default function Home() {
         style={{ width: "300px" }}
         placeholder="请选择发布地区"
         defaultValue={[CLUSTERS.TH]}
+        onChange={(values) =>
+          api_store.updateStatus(STATUS_NAME.CLUSTER, values)
+        }
       >
         {getClusterChildren()}
       </Select>

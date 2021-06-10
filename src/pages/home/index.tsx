@@ -1,21 +1,37 @@
-import { FormInstance } from "antd";
+import { FormInstance, Form } from "antd";
 import React, { useEffect, useState } from "react";
+import { set, get } from "lodash";
 import ConfigPage from "../config";
 import api from "../../api/apollo";
-import { CLUSTERS, ENVS } from "src/api/types";
+import { CLUSTERS, ENVS, PutParam } from "src/api/types";
 import CommitFilter from "../components/CommitFilter";
+import CommitAction from "../components/CommitAction";
+
+const EDIT_PATH = ["TrafficManagementCentre", "Overview"];
 
 export default function Home() {
-  const [values, setValues] = useState({});
-  let put_info = {};
-  const handleCommit = function (form: FormInstance) {
-    const value = form.getFieldsValue();
-    console.log(value);
-    // api.put({
-    //   ...put_info,
-    //   value: JSON.stringify(value),
-    // });
+  const [form] = Form.useForm();
+  let commit_info: null | PutParam = null;
+  const handleCommit = function () {
+    if (!commit_info) return;
+    const changedValue = form.getFieldsValue();
+    const editContent = set(
+      JSON.parse(commit_info.value),
+      EDIT_PATH,
+      changedValue
+    );
+    console.log("editContent =", editContent);
+
+    api.put({
+      ...commit_info,
+      value: JSON.stringify(editContent),
+    });
   };
+
+  const handlePublish = function () {};
+  /**
+   * 获取apollo配置
+   */
   const getFormData = async () => {
     const res = await api.getConfig({
       envs: ENVS.TEST,
@@ -24,22 +40,11 @@ export default function Home() {
     });
     if (res) {
       const { baseInfo, items } = res.data;
-      const valueList = items.map((info) => {
-        const {
-          item: { value },
-        } = info;
-        put_info = info.item;
-        return value;
-      });
+      commit_info = items[0].item;
+      const parseValue = get(JSON.parse(commit_info.value), EDIT_PATH);
+      console.log("parseValue =", parseValue);
 
-      valueList.forEach((value) => {
-        const parsedValue = JSON.parse(value);
-        const {
-          TrafficManagementCentre: { Overview },
-        } = parsedValue;
-        console.log("value =", Overview);
-        setValues(Overview);
-      });
+      form.setFieldsValue(parseValue);
     }
   };
   useEffect(() => {
@@ -48,11 +53,12 @@ export default function Home() {
   return (
     <div>
       <CommitFilter />
-      <ConfigPage
-        initialValues={values}
-        onRefresh={getFormData}
+      <CommitAction
+        onPublish={handlePublish}
         onCommit={handleCommit}
+        onRefresh={getFormData}
       />
+      <ConfigPage form={form} />
     </div>
   );
 }
