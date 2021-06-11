@@ -18,8 +18,8 @@ const cookies = {
   " _ga": "GA1.1.1562754525.1614563798",
   " _ga_8SBPY6GX69": "GS1.1.1623204183.24.1.1623205144.0",
   " _ga_XWL9LM2WJ1": "GS1.1.1623204183.29.1.1623205144.0",
-  SID: "7JmvKXNPccfKwFSRpHvsGqt87dp7QbtkLVMmtAJap1wWI4OLENJ61NUmgpYgwdNVjYRiuSahNd3Se4DceF7uPo3SBy7tc0x5oDNf9zCDs9o=",
-  SSO_C: "duuoxluvfripwdine317b05zaud0orha4mdaiioa",
+  SID: "c1XMDsvWcGKBQYjm1FOYUynWN4xN+i3/9cCK0gB0zenO93xXqNAVpAxuGof7ev7MvPkbAEMTQ+FaXxYfOzX1VhJIteK4z6MLs00gLY2+xXU=",
+  SSO_C: "33nl1bldxmad4di7ugkc2coootqmngonnmdbq7gq",
 };
 Object.entries(cookies).forEach((item) => {
   Cookies.set(item[0], item[1]);

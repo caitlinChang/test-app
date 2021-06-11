@@ -13,3 +13,15 @@ export class StatusManager {
     this.values = values;
   }
 }
+
+export class SingletonStatusManager<T> {
+  value: T;
+
+  constructor(defaultValue: T) {
+    this.value = defaultValue;
+  }
+
+  update(v: any) {
+    this.value = v as T;
+  }
+}

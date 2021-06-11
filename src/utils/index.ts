@@ -1,9 +1,9 @@
 import { AxiosPromise } from "axios";
-import { STATUS_NAME, api_store } from "src/store";
+import { STATUS_NAME, store, sync_store } from "src/store";
 
 export function generateUrl(namespaces: string, api: string): string[] {
-  const envs = api_store[STATUS_NAME.ENV].values;
-  const clusters = api_store[STATUS_NAME.CLUSTER].values;
+  const envs = sync_store[STATUS_NAME.ENV].values;
+  const clusters = sync_store[STATUS_NAME.CLUSTER].values;
   return envs
     .map((env) => {
       return clusters.map((cluster) => {
@@ -22,7 +22,7 @@ export function generateRequest(
 
 export function templateFilter(str: string) {
   let replaceStatus = new Function("env", "cluster", `return ${str}`);
-  const env = api_store[STATUS_NAME.ENV].values[0].toLowerCase();
-  const cluster = api_store[STATUS_NAME.CLUSTER].values[0].toLowerCase();
+  const env = sync_store[STATUS_NAME.ENV].values[0].toLowerCase();
+  const cluster = sync_store[STATUS_NAME.CLUSTER].values[0].toLowerCase();
   return replaceStatus(env, cluster);
 }

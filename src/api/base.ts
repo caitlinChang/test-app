@@ -1,6 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 
-// const host = "http://apollo-portal.test.shopee.io";
 const url = "/apps/chatbot-api";
 
 export interface BaseResponse<T = any> extends AxiosResponse {

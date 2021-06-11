@@ -1,8 +1,9 @@
-import { Select, Button, FormInstance } from "antd";
+import { Select, Button, FormInstance, Input } from "antd";
 import React, { useEffect, useState } from "react";
 import { CLUSTERS, ENVS } from "src/api/types";
-import { api_store, STATUS_NAME } from "src/store";
+import { store, STATUS_NAME } from "src/store";
 import { getEnvChildren, getClusterChildren } from "../CommitFilter";
+import OneStepSync from "../OneStepSync";
 
 export default function CommitAction(props: {
   onRefresh: () => void;
@@ -14,37 +15,32 @@ export default function CommitAction(props: {
       <strong></strong>
       <Select
         allowClear
-        style={{ width: "300px", margin: "0 20px" }}
+        style={{ width: "300px", margin: "0 10px" }}
         placeholder="请选择环境"
         defaultValue={ENVS.TEST}
-        onChange={(values) => api_store.updateStatus(STATUS_NAME.ENV, [values])}
+        onChange={(values) => store.updateStatus(STATUS_NAME.ENV, [values])}
       >
         {getEnvChildren()}
       </Select>
       <Select
-        mode="multiple"
         allowClear
         style={{ width: "300px" }}
         placeholder="请选择地区"
-        defaultValue={[CLUSTERS.TH]}
-        onChange={(values) =>
-          api_store.updateStatus(STATUS_NAME.CLUSTER, values)
-        }
+        defaultValue={CLUSTERS.TH}
       >
         {getClusterChildren()}
       </Select>
-      <Select
-        mode="multiple"
+      <Input
+        style={{ width: "300px" }}
+        disabled
+        value={"frontend-config"}
+      ></Input>
+      {/* <Select
         allowClear
         style={{ width: "300px" }}
         placeholder="请选择namespaces"
-        defaultValue={[CLUSTERS.TH]}
-        onChange={(values) =>
-          api_store.updateStatus(STATUS_NAME.CLUSTER, values)
-        }
-      >
-        {getClusterChildren()}
-      </Select>
+        defaultValue={"frontend-config"}
+      ></Select> */}
       <Button onClick={props.onRefresh}>刷新</Button>
       <Button type="default" onClick={props.onCommit}>
         提交修改
@@ -52,6 +48,7 @@ export default function CommitAction(props: {
       <Button type="primary" onClick={props.onPublish}>
         发布
       </Button>
+      <OneStepSync />
     </div>
   );
 }

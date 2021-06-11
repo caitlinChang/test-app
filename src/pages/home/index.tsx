@@ -4,7 +4,6 @@ import { set, get } from "lodash";
 import ConfigPage from "../config";
 import api from "../../api/apollo";
 import { CLUSTERS, ENVS, PutParam } from "src/api/types";
-import CommitFilter from "../components/CommitFilter";
 import CommitAction from "../components/CommitAction";
 
 const EDIT_PATH = ["TrafficManagementCentre", "Overview"];
@@ -22,10 +21,10 @@ export default function Home() {
     );
     console.log("editContent =", editContent);
 
-    // api.put({
-    //   ...commit_info,
-    //   value: JSON.stringify(editContent),
-    // });
+    api.put({
+      ...commit_info,
+      value: JSON.stringify(editContent),
+    });
   };
 
   const handlePublish = function () {};

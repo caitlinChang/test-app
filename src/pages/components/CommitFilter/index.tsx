@@ -1,7 +1,7 @@
 import { Button, Select, FormInstance, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { CLUSTERS, ENVS } from "src/api/types";
-import { api_store, STATUS_NAME } from "src/store";
+import { store, STATUS_NAME } from "src/store";
 
 const { Option } = Select;
 
@@ -27,10 +27,7 @@ export const getClusterChildren = function () {
 
 export default function CommitFilter(props: { onSyncToOthers: () => void }) {
   const handleSyncToOthers = function () {
-    if (
-      !api_store[STATUS_NAME.ENV].values.length ||
-      !api_store[STATUS_NAME.CLUSTER].values.length
-    ) {
+    if (!store[STATUS_NAME.ENV].value || !store[STATUS_NAME.CLUSTER].value) {
       return message.warning("请选择需要同步的环境和地区");
     }
 
@@ -51,7 +48,7 @@ export default function CommitFilter(props: { onSyncToOthers: () => void }) {
         style={{ width: "300px", margin: "0 20px" }}
         placeholder="请选择发布环境"
         defaultValue={ENVS.TEST}
-        onChange={(values) => api_store.updateStatus(STATUS_NAME.ENV, [values])}
+        onChange={(values) => store.updateStatus(STATUS_NAME.ENV, [values])}
       >
         {getEnvChildren()}
       </Select>
@@ -61,9 +58,7 @@ export default function CommitFilter(props: { onSyncToOthers: () => void }) {
         style={{ width: "300px" }}
         placeholder="请选择发布地区"
         defaultValue={[CLUSTERS.TH]}
-        onChange={(values) =>
-          api_store.updateStatus(STATUS_NAME.CLUSTER, values)
-        }
+        onChange={(values) => store.updateStatus(STATUS_NAME.CLUSTER, values)}
       >
         {getClusterChildren()}
       </Select>
