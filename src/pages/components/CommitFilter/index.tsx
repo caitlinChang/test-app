@@ -7,7 +7,6 @@ const { Option } = Select;
 
 export const getEnvChildren = function () {
   return Object.entries(ENVS).map(([key, value]) => {
-    console.log(key, value);
     return (
       <Option key={value} value={value}>
         {value}

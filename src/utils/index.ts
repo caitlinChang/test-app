@@ -19,3 +19,10 @@ export function generateRequest(
 ) {
   return urls.map((url: string) => request(url));
 }
+
+export function templateFilter(str: string) {
+  let replaceStatus = new Function("env", "cluster", `return ${str}`);
+  const env = api_store[STATUS_NAME.ENV].values[0].toLowerCase();
+  const cluster = api_store[STATUS_NAME.CLUSTER].values[0].toLowerCase();
+  return replaceStatus(env, cluster);
+}

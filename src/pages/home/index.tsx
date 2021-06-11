@@ -22,10 +22,10 @@ export default function Home() {
     );
     console.log("editContent =", editContent);
 
-    api.put({
-      ...commit_info,
-      value: JSON.stringify(editContent),
-    });
+    // api.put({
+    //   ...commit_info,
+    //   value: JSON.stringify(editContent),
+    // });
   };
 
   const handlePublish = function () {};
@@ -52,7 +52,7 @@ export default function Home() {
   }, []);
   return (
     <div>
-      <CommitFilter />
+      {/* <CommitFilter /> */}
       <CommitAction
         onPublish={handlePublish}
         onCommit={handleCommit}
