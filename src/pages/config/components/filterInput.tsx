@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 
-import { Input, Switch, Tooltip } from "antd";
+import { Input, Switch } from "antd";
 import { templateFilter } from "src/utils";
 
 export default function FilterInput(props: {
@@ -43,18 +43,12 @@ export default function FilterInput(props: {
       />
       <Switch
         checked={isEncode}
-        checkedChildren="编码"
+        checkedChildren="解码"
         unCheckedChildren="编码"
         onChange={() => {
           setEncode(!isEncode);
         }}
       />
-      {isEncode && (
-        <Tooltip title={encodeURIComponent(props.value || "")}>
-          编码结果
-        </Tooltip>
-      )}
-      {inputType && <Tooltip title="">字符串匹配结果</Tooltip>}
     </div>
   );
 }

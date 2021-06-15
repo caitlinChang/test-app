@@ -21,7 +21,11 @@ export function generateRequest(
 }
 
 export function templateFilter(str: string) {
-  let replaceStatus = new Function("env", "cluster", `return ${str}`);
+  const reg = `\$\{env\}`;
+  const functionCode = `return "${str}"`;
+  console.log("functionCode =", functionCode);
+
+  let replaceStatus = new Function("env", "cluster", functionCode);
   const env = sync_store[STATUS_NAME.ENV].values[0].toLowerCase();
   const cluster = sync_store[STATUS_NAME.CLUSTER].values[0].toLowerCase();
   return replaceStatus(env, cluster);

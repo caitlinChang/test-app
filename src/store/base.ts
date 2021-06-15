@@ -1,15 +1,11 @@
-export class StatusManager {
-  values: string[];
+export class StatusManager<T> {
+  values: T[];
 
-  constructor(defaultValue: string | string[]) {
-    if (typeof defaultValue === "string") {
-      this.values = [defaultValue];
-    } else {
-      this.values = defaultValue;
-    }
+  constructor(defaultValue: T[]) {
+    this.values = defaultValue;
   }
 
-  update(values: string[]) {
+  update(values: T[]) {
     this.values = values;
   }
 }
@@ -21,7 +17,7 @@ export class SingletonStatusManager<T> {
     this.value = defaultValue;
   }
 
-  update(v: any) {
-    this.value = v as T;
+  update(v: T) {
+    this.value = v;
   }
 }
