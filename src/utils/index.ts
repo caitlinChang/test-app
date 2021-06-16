@@ -1,16 +1,23 @@
 import { AxiosPromise } from "axios";
 import { STATUS_NAME, store, sync_store } from "src/store";
 
-export function generateUrl(namespaces: string, api: string): string[] {
+export function generateBaseUrl(): string[] {
   const envs = sync_store[STATUS_NAME.ENV].values;
   const clusters = sync_store[STATUS_NAME.CLUSTER].values;
+  const namespace = sync_store[STATUS_NAME.NAMESPACE].value;
   return envs
     .map((env) => {
       return clusters.map((cluster) => {
-        return `/envs/${env}/clusters/${cluster}/namespaces/${namespaces}${api}`;
+        return `/envs/${env}/clusters/${cluster}/namespaces/${namespace}`;
       });
     })
     .flat();
+}
+
+export function getCurrentBaseUrl(): string {
+  return `/envs/${store[STATUS_NAME.ENV].value}/clusters/${
+    store[STATUS_NAME.CLUSTER].value
+  }/namespaces/${store[STATUS_NAME.NAMESPACE].value}`;
 }
 
 export function generateRequest(

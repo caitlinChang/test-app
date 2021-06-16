@@ -5,6 +5,7 @@ import ConfigPage from "../config";
 import api from "../../api/apollo";
 import { CLUSTERS, ENVS, PutParam } from "src/api/types";
 import CommitAction from "../components/CommitAction";
+import { getCurrentBaseUrl } from "src/utils";
 
 const EDIT_PATH = ["TrafficManagementCentre", "Overview"];
 
@@ -22,8 +23,11 @@ export default function Home() {
     console.log("editContent =", editContent);
 
     api.put({
-      ...commit_info,
-      value: JSON.stringify(editContent),
+      url: getCurrentBaseUrl(),
+      config: {
+        ...commit_info,
+        value: JSON.stringify(editContent),
+      },
     });
   };
 
@@ -32,11 +36,7 @@ export default function Home() {
    * 获取apollo配置
    */
   const getFormData = async () => {
-    const res = await api.getConfig({
-      envs: ENVS.TEST,
-      clusters: CLUSTERS.TH,
-      namespaces: "frontend-config",
-    });
+    const res = await api.getConfig({ url: getCurrentBaseUrl() });
     if (res) {
       const { baseInfo, items } = res.data;
       commit_info = items[0].item;

@@ -1,34 +1,41 @@
 import { AxiosResponse } from "axios";
 import { fetch } from "./base";
-import { PutParam, GetConfigParam, GetApiResponse } from "./types";
-import { generateRequest, generateUrl } from "src/utils";
-
-const NAMESPACES = "frontend-config"; //当前所有环境下所有的命令空间，这里先写死
+import {
+  GetConfigParam,
+  GetApiResponse,
+  GetNamespaceParam,
+  GetNamespaceResponse,
+  PutApiParam,
+} from "./types";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-  async put(params: PutParam) {
+  async put(params: PutApiParam) {
     const api = "/item";
-
-    const request = (url: string) =>
-      fetch({
-        method: "PUT",
-        url,
-        data: params,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-    const fns = generateRequest(generateUrl(NAMESPACES, api), request);
-
-    return await Promise.all(fns);
+    return await fetch({
+      method: "PUT",
+      url: params.url + api,
+      data: params.config,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   },
 
   async getConfig(
     params: GetConfigParam
   ): Promise<AxiosResponse<GetApiResponse>> {
-    const url = `/envs/${params.envs}/clusters/${params.clusters}/namespaces/${params.namespaces}`;
+    const url = params.url;
+    return await fetch({
+      method: "GET",
+      url,
+    });
+  },
+
+  async getNamespace(
+    params: GetNamespaceParam
+  ): Promise<AxiosResponse<GetNamespaceResponse>> {
+    const url = params.url;
     return await fetch({
       method: "GET",
       url,

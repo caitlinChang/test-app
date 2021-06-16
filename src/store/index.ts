@@ -24,6 +24,7 @@ class Store {
 
   // TODO: value的类型判断
   updateStatus(name: STATUS_NAME, value: any) {
+    //@ts-ignore
     this[name].update(value);
   }
 }
@@ -41,6 +42,7 @@ class Sync_Store {
 
   // TODO: value的类型判断
   updateStatus(name: STATUS_NAME, value: any) {
+    //@ts-ignore
     this[name].update(value);
   }
 }

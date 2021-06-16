@@ -47,6 +47,11 @@ export interface PutParam {
   value: string;
 }
 
+export interface PutApiParam {
+  config: PutParam;
+  url: string;
+}
+
 export interface ConfigItem {
   isDeleted: boolean;
   isModified: boolean;
@@ -59,7 +64,13 @@ export interface GetApiResponse {
 }
 
 export interface GetConfigParam {
-  envs: ENVS;
-  clusters: CLUSTERS;
-  namespaces: string;
+  url: string;
+}
+
+export interface GetNamespaceParam {
+  url: string;
+}
+
+export interface GetNamespaceResponse {
+  namespaces: ["frontend-config"];
 }
