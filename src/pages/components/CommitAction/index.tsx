@@ -11,6 +11,7 @@ export default function CommitAction(props: {
   onRefresh: () => void;
   onCommit: () => void;
   onPublish: () => void;
+  onSync: () => void;
 }) {
   const [visible, setVisible] = useState(false);
   return (
@@ -54,7 +55,7 @@ export default function CommitAction(props: {
         <Button type="primary" onClick={props.onPublish}>
           发布
         </Button>
-        <Button type="primary" onClick={() => setVisible(true)}>
+        <Button type="primary" onClick={() => props.onSync()}>
           一键同步
         </Button>
         <OneStepSync onClose={() => setVisible(false)} visible={visible} />

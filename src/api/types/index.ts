@@ -20,7 +20,7 @@ export enum ENVS {
 }
 
 export enum CLUSTERS {
-  DEFAULT = "DEFAULT",
+  // DEFAULT = "DEFAULT",
   SG = "SG",
   MY = "MY",
   TH = "TH",
@@ -29,8 +29,8 @@ export enum CLUSTERS {
   PH = "PH",
   TW = "TW",
   BR = "BR",
-  XX = "XX",
-  MX = "MX",
+  // XX = "XX",
+  // MX = "MX",
 }
 
 export interface PutParam {

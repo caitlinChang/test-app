@@ -1,5 +1,5 @@
 import { AxiosPromise } from "axios";
-import { CLUSTERS, ENVS } from "src/constant";
+import { CLUSTERS, ENVS, NAMESPACES } from "src/constant";
 import { STATUS_NAME, store, sync_store } from "src/store";
 
 // export function generateBaseUrl(): string[] {
@@ -15,10 +15,15 @@ import { STATUS_NAME, store, sync_store } from "src/store";
 //     .flat();
 // }
 
-export function getCurrentBaseUrl(): string {
-  return `/envs/${store[STATUS_NAME.ENV].value}/clusters/${
-    store[STATUS_NAME.CLUSTER].value
-  }/namespaces/${store[STATUS_NAME.NAMESPACE].value}`;
+export function getBaseUrl(
+  env?: ENVS,
+  cluster?: CLUSTERS,
+  namespace?: NAMESPACES
+): string {
+  env = env || store[STATUS_NAME.ENV].value;
+  cluster = cluster || store[STATUS_NAME.CLUSTER].value;
+  namespace = namespace || store[STATUS_NAME.NAMESPACE].value;
+  return `/envs/${env}/clusters/${cluster}/namespaces/${namespace}`;
 }
 
 export function generateRequest(
@@ -42,10 +47,10 @@ export function generateRequest(
 export function deTemplated(str: string, env: ENVS, cluster: CLUSTERS): string {
   let r: string = str;
   if (env) {
-    r = r.replaceAll('"${env}"', `"${env}"`);
+    r = r.replaceAll('"${env}"', `"${env.toLowerCase()}"`);
   }
   if (cluster) {
-    r = r.replaceAll('"${cluster}"', `"${cluster}"`);
+    r = r.replaceAll('"${cluster}"', `"${cluster.toLowerCase()}"`);
   }
   return r;
 }

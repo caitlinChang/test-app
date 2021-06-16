@@ -9,8 +9,6 @@ const {
 
 const devProxy = () => {
   return (config) => {
-    console.log("配置 = ", config);
-    debugger;
     config.proxy = {
       "/apps/chatbot-api": {
         target: `http://apollo-portal.test.shopee.io`,
@@ -19,6 +17,11 @@ const devProxy = () => {
         // cookieDomainRewrite: {
         //   "*": "localhost",
         // },
+      },
+      "/apps/chatbot-api/envs/LIVE": {
+        target: `http://apollo-portal.shopee.io`,
+        changeOrigin: true,
+        secure: false,
       },
     };
 
