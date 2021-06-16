@@ -1,5 +1,5 @@
 import { Select, Button, Input } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { CLUSTERS, ENVS } from "src/api/types";
 import { store, STATUS_NAME } from "src/store";
 import { getEnvChildren, getClusterChildren } from "../CommitFilter";
@@ -12,6 +12,7 @@ export default function CommitAction(props: {
   onCommit: () => void;
   onPublish: () => void;
 }) {
+  const [visible, setVisible] = useState(false);
   return (
     <div className="action_wrap">
       <section className="action_section">
@@ -53,7 +54,10 @@ export default function CommitAction(props: {
         <Button type="primary" onClick={props.onPublish}>
           发布
         </Button>
-        <OneStepSync />
+        <Button type="primary" onClick={() => setVisible(true)}>
+          一键同步
+        </Button>
+        <OneStepSync onClose={() => setVisible(false)} visible={visible} />
       </section>
     </div>
   );

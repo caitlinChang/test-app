@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from "react";
 
 import { Input, Switch } from "antd";
-import { templateFilter } from "src/utils";
+import { deTemplated, templated } from "src/utils";
+import { STATUS_NAME, store } from "src/store";
 
 export default function FilterInput(props: {
   onChange?: (value: string) => void;
@@ -12,23 +13,30 @@ export default function FilterInput(props: {
   function handleChange(e: any) {
     let value: string = e.target.value;
 
-    if (inputType) {
-      value = templateFilter(e.target.value);
-    }
-
     if (isEncode) {
       value = encodeURIComponent(value);
+    }
+    if (inputType) {
+      value = deTemplated(
+        e.target.value,
+        store[STATUS_NAME.ENV].value,
+        store[STATUS_NAME.CLUSTER].value
+      );
     }
 
     props.onChange && props.onChange(value);
   }
 
   const displayValue = useMemo(() => {
+    let v = props.value || "";
     if (isEncode) {
-      return decodeURIComponent(props.value || "");
+      v = decodeURIComponent(v);
     }
-    return props.value;
-  }, [props.value, isEncode]);
+    if (inputType) {
+      v = templated(v);
+    }
+    return v;
+  }, [props.value, isEncode, inputType]);
 
   return (
     <div>

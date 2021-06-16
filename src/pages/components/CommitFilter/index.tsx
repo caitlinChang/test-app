@@ -25,40 +25,33 @@ export const getClusterChildren = function () {
   });
 };
 
-export default function CommitFilter(props: { onSyncToOthers: () => void }) {
-  const handleSyncToOthers = function () {
-    if (!store[STATUS_NAME.ENV].value || !store[STATUS_NAME.CLUSTER].value) {
-      return message.warning("请选择需要同步的环境和地区");
-    }
-
-    props.onSyncToOthers();
-  };
-
+export default function CommitFilter(props: {
+  onUpdate: (name: STATUS_NAME, value: string) => void;
+}) {
   return (
     <div
       style={{
         padding: "12px 0",
         overflow: "hidden",
-        backgroundColor: "#f0f0f0",
       }}
     >
-      <Button onClick={handleSyncToOthers}>同步到其他环境和地区</Button>
+      <strong>请选择</strong>
       <Select
         allowClear
-        style={{ width: "300px", margin: "0 20px" }}
+        style={{ width: "100px", margin: "0 20px" }}
         placeholder="请选择发布环境"
         defaultValue={ENVS.TEST}
-        onChange={(values) => store.updateStatus(STATUS_NAME.ENV, [values])}
+        onChange={(value) => props.onUpdate(STATUS_NAME.ENV, value)}
       >
         {getEnvChildren()}
       </Select>
+
       <Select
-        mode="multiple"
         allowClear
-        style={{ width: "300px" }}
+        style={{ width: "100px" }}
         placeholder="请选择发布地区"
-        defaultValue={[CLUSTERS.TH]}
-        onChange={(values) => store.updateStatus(STATUS_NAME.CLUSTER, values)}
+        defaultValue={CLUSTERS.TH}
+        onChange={(value) => props.onUpdate(STATUS_NAME.CLUSTER, value)}
       >
         {getClusterChildren()}
       </Select>

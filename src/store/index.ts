@@ -55,4 +55,4 @@ export const store = new Store();
 /**
  * 一键同步的store
  */
-export const sync_store = new Sync_Store();
+export const sync_store = new Store();
