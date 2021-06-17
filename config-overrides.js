@@ -10,16 +10,13 @@ const {
 const devProxy = () => {
   return (config) => {
     config.proxy = {
-      "/apps/chatbot-api": {
+      "/apps/chatbot-api/envs/TEST": {
         target: `http://apollo-portal.test.shopee.io`,
         changeOrigin: true,
         secure: false,
-        // cookieDomainRewrite: {
-        //   "*": "localhost",
-        // },
       },
       "/apps/chatbot-api/envs/LIVE": {
-        target: `http://apollo-portal.shopee.io`,
+        target: `https://apollo-portal.shopee.io`,
         changeOrigin: true,
         secure: false,
       },

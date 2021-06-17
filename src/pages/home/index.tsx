@@ -75,7 +75,7 @@ export default function Home() {
             return graph;
           });
 
-          await structureBody(newData, env, cluster);
+          // await structureBody(newData, env, cluster);
 
           message.success("提交成功！");
         } else {

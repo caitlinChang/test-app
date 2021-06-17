@@ -32,7 +32,15 @@ const live_cookies = {
   SSO_C: "b7pvr6hyrenesijfzf73th4qqelq8yd27mde6fdy",
 };
 Object.entries(test_cookies).forEach((item) => {
-  Cookies.set(item[0], item[1]);
+  Cookies.set(item[0], item[1], { path: "/apps/chatbot-api/envs/TEST" });
+});
+
+Object.entries(test_cookies).forEach((item) => {
+  Cookies.set(item[0], item[1], { path: "/apps/chatbot-api/envs/UAT" });
+});
+
+Object.entries(live_cookies).forEach((item) => {
+  Cookies.set(item[0], item[1], { path: "/apps/chatbot-api/envs/LIVE" });
 });
 
 Object.entries(live_cookies).forEach((item) => {
