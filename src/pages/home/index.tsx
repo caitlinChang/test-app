@@ -35,7 +35,8 @@ export default function Home() {
       EDIT_PATH,
       changedValue
     );
-
+      // console.log('editContent =', editContent);
+      
     await api.put({
       url: getBaseUrl(env, cluster),
       config: {
@@ -45,12 +46,14 @@ export default function Home() {
     });
   }
 
-  const handlePublish = function () {};
+  const handlePublish = async function (env?:ENVS,cluster?:CLUSTERS) {
+    await api.release({ url:getBaseUrl(env,cluster)})
+  };
   /**
    * 一键同步
    */
   const handleSync = async function () {
-    const env = ENVS.LIVE;
+    const env = ENVS.UAT;
     // const cluster = CLUSTERS.BR;
     Object.values(CLUSTERS).map(async (cluster) => {
       const res = await api.getConfig({ url: getBaseUrl(env, cluster) });
@@ -74,8 +77,16 @@ export default function Home() {
             );
             return graph;
           });
+          
+          await structureBody({
+            Graphs:newData
+          }, env, cluster);
+          // @ts-ignore
+          if(env !== ENVS.LIVE){
+            await handlePublish(env,cluster)
+          }
 
-          // await structureBody(newData, env, cluster);
+          
 
           message.success("提交成功！");
         } else {

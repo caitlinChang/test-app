@@ -21,13 +21,13 @@ export enum ENVS {
 
 export enum CLUSTERS {
   // DEFAULT = "DEFAULT",
-  SG = "SG",
-  MY = "MY",
+  // SG = "SG",
+  // MY = "MY",
   TH = "TH",
-  ID = "ID",
-  VN = "VN",
-  PH = "PH",
-  TW = "TW",
+  // ID = "ID",
+  // VN = "VN",
+  // PH = "PH",
+  // TW = "TW",
   BR = "BR",
   // XX = "XX",
   // MX = "MX",
@@ -73,4 +73,10 @@ export interface GetNamespaceParam {
 
 export interface GetNamespaceResponse {
   namespaces: ["frontend-config"];
+}
+
+export interface ReleaseApiParam {
+  isEmergencyPublish:boolean;
+  releaseComment:string;
+  releaseTitle:string;
 }

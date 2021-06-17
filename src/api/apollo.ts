@@ -6,7 +6,10 @@ import {
   GetNamespaceParam,
   GetNamespaceResponse,
   PutApiParam,
+  ReleaseApiParam
 } from "./types";
+
+import moment from "moment";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -16,6 +19,27 @@ export default {
       method: "PUT",
       url: params.url + api,
       data: params.config,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
+
+  async release(params:{
+    url:string;
+  }){
+    const api = "/releases";
+    const title = moment().format('YYYYMMDDHHmmss')
+    const config :ReleaseApiParam = {
+      isEmergencyPublish:false,
+      releaseComment:"",
+      releaseTitle:`${title}-release`,
+    }
+    
+    return await fetch({
+      method: "POST",
+      url: params.url + api,
+      data: config,
       headers: {
         "Content-Type": "application/json",
       },

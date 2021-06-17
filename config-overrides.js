@@ -15,6 +15,11 @@ const devProxy = () => {
         changeOrigin: true,
         secure: false,
       },
+      "/apps/chatbot-api/envs/UAT": {
+        target: `http://apollo-portal.test.shopee.io`,
+        changeOrigin: true,
+        secure: false,
+      },
       "/apps/chatbot-api/envs/LIVE": {
         target: `https://apollo-portal.shopee.io`,
         changeOrigin: true,
