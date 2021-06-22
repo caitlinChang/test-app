@@ -12,15 +12,17 @@ export default function FilterInput(props: {
   const [isEncode, setEncode] = useState(false);
   function handleChange(e: any) {
     let value: string = e.target.value;
-
+    if(!value) return props.onChange && props.onChange(value);
     if (isEncode) {
       value = encodeURIComponent(value);
     }
-    if (inputType) {
+    const env = store[STATUS_NAME.ENV].value
+    const cluster = store[STATUS_NAME.CLUSTER].value
+    if (inputType && env && cluster) {
       value = deTemplated(
-        e.target.value,
-        store[STATUS_NAME.ENV].value,
-        store[STATUS_NAME.CLUSTER].value
+        value,
+        env,
+        cluster
       );
     }
 

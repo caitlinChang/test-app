@@ -6,6 +6,9 @@ import api from "../../api/apollo";
 import { CLUSTERS, ENVS, PutParam } from "src/api/types";
 import CommitAction from "../components/CommitAction";
 import { getBaseUrl, templated, deTemplated } from "src/utils";
+import { STATUS_NAME, store } from "src/store";
+
+import { observer } from "mobx-react-lite";
 
 const EDIT_PATH = ["TrafficManagementCentre", "Overview"];
 
@@ -15,7 +18,7 @@ function translateString(str: string, env: ENVS, cluster: CLUSTERS) {
   );
 }
 
-export default function Home() {
+function Home() {
   const [form] = Form.useForm();
   let commit_info: null | PutParam = null;
 
@@ -36,6 +39,7 @@ export default function Home() {
       changedValue
     );
       // console.log('editContent =', editContent);
+      // return ;
       
     await api.put({
       url: getBaseUrl(env, cluster),
@@ -53,7 +57,7 @@ export default function Home() {
    * 一键同步
    */
   const handleSync = async function () {
-    const env = ENVS.UAT;
+    const env = ENVS.LIVE;
     // const cluster = CLUSTERS.BR;
     Object.values(CLUSTERS).map(async (cluster) => {
       const res = await api.getConfig({ url: getBaseUrl(env, cluster) });
@@ -82,9 +86,9 @@ export default function Home() {
             Graphs:newData
           }, env, cluster);
           // @ts-ignore
-          if(env !== ENVS.LIVE){
-            await handlePublish(env,cluster)
-          }
+          // if(env !== ENVS.LIVE){
+          //   await handlePublish(env,cluster)
+          // }
 
           
 
@@ -100,7 +104,14 @@ export default function Home() {
    * 获取apollo配置
    */
   const getFormData = async () => {
-    const res = await api.getConfig({ url: getBaseUrl() });
+    const url = getBaseUrl();
+    console.log('url =', url);
+    
+    if(!url){
+      return message.warning('请先选择环境和地区')
+    }
+
+    const res = await api.getConfig({ url });
     if (res) {
       const { items } = res.data;
       commit_info = items[0].item;
@@ -111,8 +122,12 @@ export default function Home() {
     }
   };
   useEffect(() => {
-    getFormData();
-  }, []);
+    console.log('发生改变', store[STATUS_NAME.ENV].value, store[STATUS_NAME.CLUSTER].value);
+    
+    if(store[STATUS_NAME.ENV].value, store[STATUS_NAME.CLUSTER].value){
+      getFormData();
+    }
+  }, [store[STATUS_NAME.ENV].value, store[STATUS_NAME.CLUSTER].value]);
   return (
     <div>
       {/* <CommitFilter /> */}
@@ -126,3 +141,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default observer(Home)

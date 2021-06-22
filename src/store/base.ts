@@ -1,8 +1,12 @@
+import { makeAutoObservable } from "mobx";
+
 export class StatusManager<T> {
   values: T[];
 
   constructor(defaultValue: T[]) {
     this.values = defaultValue;
+
+    makeAutoObservable(this)
   }
 
   update(values: T[]) {
@@ -11,10 +15,11 @@ export class StatusManager<T> {
 }
 
 export class SingletonStatusManager<T> {
-  value: T;
+  value: T | undefined;
 
-  constructor(defaultValue: T) {
+  constructor(defaultValue?: T) {
     this.value = defaultValue;
+    makeAutoObservable(this)
   }
 
   update(v: T) {

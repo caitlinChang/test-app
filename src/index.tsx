@@ -18,8 +18,8 @@ const test_cookies = {
   _ga: "GA1.1.1562754525.1614563798",
   _ga_8SBPY6GX69: "GS1.1.1623204183.24.1.1623205144.0",
   _ga_XWL9LM2WJ1: "GS1.1.1623204183.29.1.1623205144.0",
-  SID: "C6B1SjUBZygkF+/qEMv9QFeiYun8wvCR0mVtKmQ3l1EQciuNJTMRYffYqdplkF8hkoB8B8q8jkPOnswTMPlGHGzjeLAOID+ebeIVRHQg6AY=",
-  SSO_C: "9q4n8tle84i7ix7cnk71n9ile8ma5blummde45ta",
+  SID: "TAqohs4DLPft5HmuMmDXuu55sergr4G9g8g8dzu3cGDs5yL0TNuLMO9CkVYqvl3gCf4prXFLmB7U5K/9RaMLGW9p4Idq+srx/oVCU9HwPBs=",
+  SSO_C: "e0sijtaqsh3ipy4ru0tmipexxz5xpykfsmdihqsi",
 };
 
 const live_cookies = {
@@ -28,7 +28,7 @@ const live_cookies = {
   _ga: "GA1.2.1562754525.1614563798",
   _ga_8SBPY6GX69: "GS1.1.1623306098.28.1.1623306186.0",
   _ga_XWL9LM2WJ1: "GS1.1.1623306098.33.1.1623306186.0",
-  SID: "VHOMtmzPvEpqvdapxqYR/TBrFqMIz0QUCeyIEPZntJfIVWVUIMK0NRxXxk9rvVEoF8n7qW41SMX2alrVgQW3s2eJHp+lS4RX3IuuD4aho+k=",
+  SID: "DTCsgV3mZdF8q3E2iv/jEMbWNb1j/cjlE7AFg9W80c4Yhdq0gU/sfSCNzK6ln0QcSn6LkCg90Mzfdc7eyOpN3bqu0dNYxRPL02J+/HPlJ5c=",
   SSO_C: "b7pvr6hyrenesijfzf73th4qqelq8yd27mde6fdy",
 };
 Object.entries(test_cookies).forEach((item) => {

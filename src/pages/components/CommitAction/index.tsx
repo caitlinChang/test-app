@@ -21,9 +21,8 @@ export default function CommitAction(props: {
         <Select
           allowClear
           placeholder="请选择环境"
-          defaultValue={ENVS.TEST}
           style={{ width: "100px" }}
-          onChange={(values) => store.updateStatus(STATUS_NAME.ENV, [values])}
+          onChange={(value) => store.updateStatus(STATUS_NAME.ENV, value)}
         >
           {getEnvChildren()}
         </Select>
@@ -34,7 +33,7 @@ export default function CommitAction(props: {
           allowClear
           style={{ width: "100px" }}
           placeholder="请选择地区"
-          defaultValue={CLUSTERS.TH}
+          onChange={(value) => store.updateStatus(STATUS_NAME.CLUSTER, value)}
         >
           {getClusterChildren()}
         </Select>
